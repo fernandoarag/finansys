@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { Entry } from './entry.model';
 
@@ -14,12 +14,12 @@ export class EntryService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Entry[]> {
-    return this.http.get<Entry[]>(`${this.apiPath}`);
+    // return this.http.get<Entry[]>(`${this.apiPath}`);
 
-    // return this.http.get(`${this.apiPath}`).pipe(
-    //   catchError(this.handleError),
-    //   map(this.jsonDataToEntries)
-    // );
+    return this.http.get(`${this.apiPath}`).pipe(
+      catchError(this.handleError),
+      map(this.jsonDataToEntries)
+    );
   }
 
   getById(id: number): Observable<Entry> {
@@ -60,18 +60,18 @@ export class EntryService {
 
 
   // *** PRIVATE METHOD's ***
-  // private jsonDataToEntry(jsonData: any): Entry {
-  //   return jsonData as Entry;
-  // }
+  private jsonDataToEntry(jsonData: any): Entry {
+    return jsonData as Entry;
+  }
 
-  // private jsonDataToEntries(jsonData: any[]): Entry[] {
-  //   const entries: Entry[] = [];
-  //   jsonData.forEach(element => entries.push(element as Entry));
-  //   return entries;
-  // }
+  private jsonDataToEntries(jsonData: any[]): Entry[] {
+    const entries: Entry[] = [];
+    jsonData.forEach(el => entries.push(Object.assign(new Entry(), el)));
+    return entries;
+  }
 
-  // private handleError(error: any): Observable<any> {
-  //   console.log('ERROR NA REQUISIÇÃO: ', error);
-  //   return throwError(error);
-  // }
+  private handleError(error: any): Observable<any> {
+    console.log('ERROR NA REQUISIÇÃO: ', error);
+    return throwError(error);
+  }
 }
