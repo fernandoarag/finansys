@@ -17,7 +17,7 @@ export class EntryListComponent implements OnInit {
     this.categoryService.getAll().subscribe(
       res => this.entries = res.sort((after, before) => before.id - after.id),
       err => console.error('Erro ao carregar a lista: ', err)
-    ).add(() => console.log('[GetAll][Entries]: Finally'));
+    );
   }
 
   deleteEntry(entry: Entry) {
