@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 
 import { CategoryService } from '../../categories/shared/category.service';
 import { Entry } from './entry.model';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 
@@ -17,26 +17,22 @@ export class EntryService extends BaseResourceService<Entry> {
   }
 
   create(entry: Entry): Observable<Entry> {
-    const { categoryId } = entry;
-
-    return this.categoryService.getById(categoryId).pipe(
-      // Merga o retorno da categoria com o entry
-      mergeMap(category => {
-        entry.category = category;
-        return super.create(entry);
-      })
-    );
+    return this.setCategoryAndSendToServer(entry, super.create.bind(this));
   }
 
   update(entry: Entry): Observable<Entry> {
-    const { categoryId } = entry;
+    return this.setCategoryAndSendToServer(entry, super.update.bind(this));
+  }
 
-    return this.categoryService.getById(categoryId).pipe(
+
+  private setCategoryAndSendToServer(entry: Entry, sendFn: any): Observable<Entry> {
+    return this.categoryService.getById(entry.categoryId).pipe(
       // Merga o retorno da categoria com o entry
       mergeMap(category => {
         entry.category = category;
-        return super.create(entry);
-      })
+        return sendFn(entry);
+      }),
+      catchError(this.handleError)
     );
   }
 }
