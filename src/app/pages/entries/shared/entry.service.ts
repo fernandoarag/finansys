@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class EntryService extends BaseResourceService<Entry> {
 
   constructor(protected injector: Injector, private categoryService: CategoryService) {
-    super('api/entries', injector);
+    super('api/entries', injector, Entry.fromJson);
   }
 
   create(entry: Entry): Observable<Entry> {
@@ -38,17 +38,5 @@ export class EntryService extends BaseResourceService<Entry> {
         return super.create(entry);
       })
     );
-  }
-
-
-  // *** PROTECTED METHOD's ***
-  protected jsonDataToResources(jsonData: any[]): Entry[] {
-    const entries: Entry[] = [];
-    jsonData.forEach(el => entries.push(Object.assign(new Entry(), el)));
-    return entries;
-  }
-
-  protected jsonDataToResource(jsonData: any): Entry {
-    return Object.assign(new Entry(), jsonData);
   }
 }

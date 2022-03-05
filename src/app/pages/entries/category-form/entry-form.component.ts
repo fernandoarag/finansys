@@ -134,7 +134,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   }
 
   private createEntry() {
-    const entry: Entry = Object.assign(new Entry(), this.entryForm.value);
+    const entry: Entry = Entry.fromJson(this.entryForm.value);
 
     this.entryService.create(entry).subscribe(
       res => this.actionsForSuccess(res),
@@ -143,16 +143,20 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   }
 
   private updateEntry() {
-    const entry: Entry = Object.assign(new Entry(), this.entryForm.value);
+    const entry: Entry = Entry.fromJson(this.entryForm.value);
 
     this.entryService.update(entry).subscribe(
-      res => this.actionsForSuccess(res),
+      res => {
+        console.log('UpdateEntry: ', res);
+        this.actionsForSuccess(res);
+      },
       err => this.actionsForError(err)
     );
   }
 
   private actionsForSuccess(entry: Entry) {
     toastr.success('Solicitação processada com sucesso!');
+    console.log(entry);
 
     // Redirect/Reload component page - "skipLocationChange": Não adiciona ao histórico
     this.router.navigateByUrl('entries', {
