@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
-import { BaseResouceModel } from 'src/app/shared/models/base-resource.model';
+import { catchError, map } from 'rxjs/operators';
+import { BaseResourceModel } from 'src/app/shared/models/base-resource.model';
 
-export abstract class BaseResourceService<T extends BaseResouceModel> {
+export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   protected http: HttpClient;
 
