@@ -1,9 +1,10 @@
-import { BaseResourceModel } from 'src/app/shared/models/base-resource.model';
-import { AfterContentChecked, OnInit, Injector } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AfterContentChecked, Injector, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { BaseResourceModel } from 'src/app/shared/models/base-resource.model';
 import toastr from 'toastr';
+
 import { BaseResourceService } from '../../services/base-resource.service';
 
 
@@ -20,8 +21,8 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   protected formBuilder: FormBuilder;
 
   constructor(
-    public resource: T,
     protected injector: Injector,
+    public resource: T,
     protected resourceService: BaseResourceService<T>,
     protected jsonDataToResourceFn: (jsonData: any) => T
   ) {
@@ -79,7 +80,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     if (this.currentAction === 'new') {
       this.pageTitle = this.creationPageTitle();
     } else {
-      this.editionPagetitle();
+      this.pageTitle = this.editionPagetitle();
     }
   }
 
