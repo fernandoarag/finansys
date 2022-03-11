@@ -116,7 +116,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
     // Redirect/Reload component page - "skipLocationChange": Não adiciona ao histórico
     this.router.navigateByUrl(baseComponentPath, { skipLocationChange: true }).then(
-      () => this.router.navigate(['categories', resource.id, 'edit'])
+      () => this.router.navigate([baseComponentPath, resource.id, 'edit'])
     );
   }
 
