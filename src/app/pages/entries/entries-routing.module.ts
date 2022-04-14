@@ -1,7 +1,7 @@
-import { EntryFormComponent } from './category-form/entry-form.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { EntryFormComponent } from './entry-form/entry-form.component';
 import { EntryListComponent } from './entry-list/entry-list.component';
 
 const routes: Routes = [
